@@ -164,6 +164,30 @@
   footer a{color:#EbF4F4;text-decoration:underline}
   .disc{color:#A9CFCF;font-size:12.5px;line-height:1.6}
 
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;
+    box-shadow:var(--shadow);border-top:4px solid var(--teal)}
+  section:nth-of-type(even) .stat{background:var(--surface-2)}
+  .stat .v{font-size:31px;font-weight:800;color:var(--teal);font-variant-numeric:tabular-nums;line-height:1.12}
+  .stat .v small{font-size:15px;font-weight:700}
+  .stat .l{font-size:13.5px;color:var(--muted);margin-top:5px;line-height:1.5}
+  .stat.amber{border-top-color:var(--amber)} .stat.amber .v{color:var(--amber)}
+  .stat.blue{border-top-color:var(--blue)} .stat.blue .v{color:var(--blue)}
+  .bars{display:flex;flex-direction:column;gap:11px;margin-top:8px}
+  .bar-row{display:grid;grid-template-columns:96px 1fr 52px;align-items:center;gap:10px;font-size:14px}
+  .bar-track{background:var(--surface-2);border-radius:999px;height:14px;overflow:hidden;border:1px solid var(--line)}
+  .bar-fill{display:block;height:100%;border-radius:999px;background:var(--teal)}
+  .bar-row .pct{font-variant-numeric:tabular-nums;font-weight:800;color:var(--teal);text-align:right}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.split{grid-template-columns:1fr}}
+  .panel{border-radius:var(--radius);padding:20px 22px;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .panel.good{background:var(--tint)} .panel.risk{background:var(--tint-amber)}
+  .panel h3{margin:0 0 .4em;font-size:18px;font-weight:800}
+  .panel p{margin:.35em 0}
+  .taglist{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .taglist span{font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:8px;background:var(--surface);border:1px solid var(--line);color:var(--ink)}
   .theme-toggle{background:transparent;border:1px solid rgba(255,255,255,.5);color:#fff;border-radius:999px;
     width:38px;height:38px;cursor:pointer;font-size:16px;display:grid;place-items:center}
   .theme-toggle:hover{background:rgba(255,255,255,.12)}
@@ -194,9 +218,12 @@
 <nav class="jump" aria-label="區塊導覽">
   <ul class="wrap">
     <li><a href="#intro">失智症介紹</a></li>
-    <li><a href="#skills">外籍看護照顧技巧教材</a></li>
-    <li><a href="#resources">臺南失智照護資源</a></li>
-    <li><a href="#contact">聯絡與洽詢</a></li>
+    <li><a href="#epi">流行病學</a></li>
+    <li><a href="#prevent">預防方法</a></li>
+    <li><a href="#skills">照顧技巧教材</a></li>
+    <li><a href="#respite">照顧者紓壓</a></li>
+    <li><a href="#resources">照護資源</a></li>
+    <li><a href="#contact">聯絡洽詢</a></li>
   </ul>
 </nav>
 
@@ -241,6 +268,68 @@
       <div class="sign"><span class="i">8</span><span>判斷力變差或減弱。</span></div>
       <div class="sign"><span class="i">9</span><span>從職場或社交活動中退出。</span></div>
       <div class="sign"><span class="i">10</span><span>情緒與個性明顯改變。</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 1b. 流行病學 -->
+<section id="epi">
+  <div class="wrap">
+    <div class="eyebrow">Epidemiology · 現況</div>
+    <h2 class="title">失智症流行病學</h2>
+    <p class="lead">隨著人口老化，失智症盛行率持續上升。依衛生福利部最新社區失智症流行病學調查，臺灣失智人口每年穩定增加，早期認識與預防益發重要。</p>
+    <div class="stats">
+      <div class="stat"><div class="v">約 35<small> 萬人</small></div><div class="l">2024 年估計臺灣 65 歲以上失智人口</div></div>
+      <div class="stat amber"><div class="v">7.99<small>%</small></div><div class="l">65 歲以上社區失智症盛行率</div></div>
+      <div class="stat blue"><div class="v">近 68<small> 萬人</small></div><div class="l">推估 2041 年 65 歲以上失智人口</div></div>
+      <div class="stat"><div class="v">每 30<small> 分鐘</small></div><div class="l">未來 20 年約每 30 分鐘新增 1 位失智者</div></div>
+    </div>
+    <div class="grid cards-2" style="margin-top:18px">
+      <div class="card">
+        <h3>失智症類型分布</h3>
+        <div class="bars">
+          <div class="bar-row"><span>阿茲海默型</span><span class="bar-track"><span class="bar-fill" style="width:56.9%"></span></span><span class="pct">56.9%</span></div>
+          <div class="bar-row"><span>血管型</span><span class="bar-track"><span class="bar-fill" style="width:22.9%;background:var(--blue)"></span></span><span class="pct">22.9%</span></div>
+          <div class="bar-row"><span>巴金森氏症</span><span class="bar-track"><span class="bar-fill" style="width:7.1%;background:var(--amber)"></span></span><span class="pct">7.1%</span></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-top:12px">失智症前三大類型（其餘為其他及混合型）。</p>
+      </div>
+      <div class="card">
+        <h3>其他重點數據</h3>
+        <p>・<b>性別</b>：女性盛行率 9.36%，高於男性的 6.35%。</p>
+        <p>・<b>年齡</b>：年齡層越高，盛行率越高。</p>
+        <p>・<b>趨勢</b>：推估 2031 年將逾 47 萬人。</p>
+        <p>・<b>全球</b>：世界衛生組織估全球逾 5,500 萬人罹患失智症，每年新增約 1,000 萬例。</p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:8px">資料來源：衛生福利部社區失智症流行病學調查、世界衛生組織（WHO）。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 1c. 預防 -->
+<section id="prevent">
+  <div class="wrap">
+    <div class="eyebrow">Prevention · 趨吉避凶</div>
+    <h2 class="title">失智症的預防</h2>
+    <p class="lead">失智症無法完全避免，但研究顯示，「增加保護因子、遠離危險因子」的生活方式可以降低風險、延緩發生。原則可以簡記為「趨吉避凶」。</p>
+    <div class="split">
+      <div class="panel good">
+        <h3 style="color:var(--teal)">趨吉 · 增加保護因子</h3>
+        <p><b>三動</b>：多動腦、多運動、多參與社交與休閒活動。</p>
+        <p><b>兩高</b>：高度心智活動（持續學習），多攝取高抗氧化食物。</p>
+        <p><b>地中海飲食</b>：多蔬果、全穀、豆類、橄欖油與魚，少紅肉與加工食品。</p>
+        <p><b>維持健康體重</b>：避免中年肥胖，也避免老年過瘦。</p>
+      </div>
+      <div class="panel risk">
+        <h3 style="color:var(--amber)">避凶 · 遠離危險因子</h3>
+        <p>控制三高（高血壓、高血糖、高血脂），戒菸、節制飲酒。</p>
+        <p>預防頭部外傷、保護聽力、及早處理憂鬱。</p>
+        <p>避免社交孤立，維持規律的人際互動。</p>
+        <div class="taglist">
+          <span>高血壓</span><span>糖尿病</span><span>肥胖</span><span>抽菸</span><span>飲酒過量</span><span>聽力損失</span><span>頭部外傷</span><span>缺乏運動</span><span>憂鬱</span><span>社交孤立</span><span>空氣汙染</span><span>缺乏教育</span>
+        </div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px">世界衛生組織列出的失智症可控危險因子。</p>
+      </div>
     </div>
   </div>
 </section>
@@ -335,6 +424,38 @@
       <a href="http://www.caregiver.gov.taipei/indonesian/mobile/index.html" target="_blank" rel="noopener">外籍看護照顧手冊（中印尼文）</a>
       <a href="https://www.ilong-termcare.com/Article/Detail/273" target="_blank" rel="noopener">給外籍看護的照顧手冊（中英・中印尼）</a>
       <a href="http://www.tada2002.org.tw/" target="_blank" rel="noopener">台灣失智症協會　衛教資源</a>
+    </div>
+  </div>
+</section>
+
+<!-- 2b. 照顧者紓壓 -->
+<section id="respite">
+  <div class="wrap">
+    <div class="eyebrow">Caregiver Wellbeing · 照顧者</div>
+    <h2 class="title">照顧者紓壓與自我照顧</h2>
+    <p class="lead">照顧失智長輩是一段長期而辛苦的旅程。照顧好自己，才能長久照顧家人。當出現下列徵兆時，代表你需要喘息與求助。</p>
+    <div class="grid cards-3">
+      <div class="card">
+        <h3>留意壓力徵兆</h3>
+        <p>長期疲憊、失眠、容易煩躁、情緒低落、對事物失去興趣、常覺得孤立無援，都是身心過載的警訊。</p>
+      </div>
+      <div class="card">
+        <h3>紓壓方法</h3>
+        <p>・維持規律作息與運動，練習深呼吸放鬆。</p>
+        <p>・保留屬於自己的時間與興趣。</p>
+        <p>・不追求完美，允許自己休息與求助。</p>
+      </div>
+      <div class="card">
+        <h3>善用支持資源</h3>
+        <p>・申請喘息服務與日間照顧，讓自己定期休息。</p>
+        <p>・參加照顧者支持團體，與他人交流經驗。</p>
+        <p>・必要時尋求心理諮商或醫療協助。</p>
+      </div>
+    </div>
+    <div class="hotlines" style="margin-top:18px">
+      <div class="hot"><div class="lab">家庭照顧者關懷專線</div><div class="no">0800-507-272</div><div class="d">家庭照顧者關懷總會（諧音「有您真好」），免付費諮詢與情緒支持。</div></div>
+      <div class="hot alt"><div class="lab">長照服務專線</div><div class="no">1966</div><div class="d">申請喘息服務、日間照顧等長照資源。</div></div>
+      <div class="hot amber"><div class="lab">失智症關懷專線</div><div class="no">0800-474-580</div><div class="d">台灣失智症協會，失智照顧諮詢。</div></div>
     </div>
   </div>
 </section>
