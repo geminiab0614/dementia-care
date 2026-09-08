@@ -1,0 +1,1104 @@
+<title>嘉南一般精神科飲料點單</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
+<style>
+  :root{
+    --ground:#EFF1EC;
+    --surface:#FDFDFB;
+    --sunken:#E5E9E0;
+    --ink:#1B211C;
+    --ink-2:#5B6459;
+    --ink-3:#828C7F;
+    --line:#D6DAD0;
+    --line-soft:#E4E8DF;
+    --tea:#26473C;
+    --tea-ink:#26473C;
+    --tea-soft:#DEE8E1;
+    --sugar:#9A5B22;
+    --sugar-soft:#F2E5D4;
+    --danger:#A2382B;
+    --danger-soft:#F4E0DC;
+    --on-tea:#F1F4EE;
+    --brand-bg:#26473C;
+    --brand-fg:#F1F4EE;
+    --on-sugar:#FFFFFF;
+    --accent-btn:#26473C;
+    --on-accent:#F1F4EE;
+    --shadow-sm:0 1px 2px rgba(27,33,28,.05);
+    --shadow-md:0 2px 4px rgba(27,33,28,.05),0 12px 28px rgba(27,33,28,.07);
+    --shadow-bar:0 -1px 0 var(--line),0 -10px 30px rgba(27,33,28,.06);
+    --r:12px;
+    --serif:"Noto Serif TC","Songti TC","PMingLiU",Georgia,serif;
+    --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei","微軟正黑體",system-ui,sans-serif;
+    --mono:"DM Mono","Roboto Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#101412;
+      --surface:#191E1A;
+      --sunken:#141916;
+      --ink:#E6EAE2;
+      --ink-2:#9BA69A;
+      --ink-3:#788276;
+      --line:#2B322C;
+      --line-soft:#232A24;
+      --tea:#7CBBA1;
+      --tea-ink:#8FC9B0;
+      --tea-soft:#1B2C25;
+      --sugar:#D89B57;
+      --sugar-soft:#2E2318;
+      --danger:#E38273;
+      --danger-soft:#331F1B;
+      --on-tea:#0E1411;
+      --brand-bg:#16211C;
+      --brand-fg:#DFEAE2;
+      --on-sugar:#1E1509;
+      --accent-btn:#7CBBA1;
+      --on-accent:#0E1411;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+      --shadow-md:0 2px 4px rgba(0,0,0,.35),0 12px 28px rgba(0,0,0,.45);
+      --shadow-bar:0 -1px 0 var(--line),0 -10px 30px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#101412;
+    --surface:#191E1A;
+    --sunken:#141916;
+    --ink:#E6EAE2;
+    --ink-2:#9BA69A;
+    --ink-3:#788276;
+    --line:#2B322C;
+    --line-soft:#232A24;
+    --tea:#7CBBA1;
+    --tea-ink:#8FC9B0;
+    --tea-soft:#1B2C25;
+    --sugar:#D89B57;
+    --sugar-soft:#2E2318;
+    --danger:#E38273;
+    --danger-soft:#331F1B;
+    --on-tea:#0E1411;
+    --brand-bg:#16211C;
+    --brand-fg:#DFEAE2;
+    --on-sugar:#1E1509;
+    --accent-btn:#7CBBA1;
+    --on-accent:#0E1411;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --shadow-md:0 2px 4px rgba(0,0,0,.35),0 12px 28px rgba(0,0,0,.45);
+    --shadow-bar:0 -1px 0 var(--line),0 -10px 30px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--ground);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    padding-bottom:calc(96px + env(safe-area-inset-bottom,0px));
+  }
+  body.no-bar{padding-bottom:40px}
+  h1,h2,h3{font-family:var(--serif);font-weight:700;text-wrap:balance;line-height:1.32;margin:0}
+  button,input,textarea,select{font:inherit;color:inherit}
+  :focus-visible{outline:2px solid var(--sugar);outline-offset:2px;border-radius:6px}
+  .wrap{max-width:720px;margin:0 auto;padding:0 18px}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:40;background:var(--brand-bg);color:var(--brand-fg);
+  }
+  .topbar .wrap{display:flex;align-items:center;gap:12px;height:52px}
+  .mark{display:flex;align-items:baseline;gap:8px;min-width:0}
+  .mark b{font-family:var(--serif);font-size:16px;font-weight:600;letter-spacing:.04em;white-space:nowrap}
+  .mark span{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;opacity:.72;white-space:nowrap}
+  .live{margin-left:auto;display:flex;align-items:center;gap:7px;font-family:var(--mono);
+    font-size:12px;letter-spacing:.06em;opacity:.9;white-space:nowrap}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.55}
+  .dot.on{opacity:1;animation:pulse 2.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .theme{margin-left:4px;background:transparent;border:1px solid rgba(241,244,238,.32);
+    color:inherit;border-radius:999px;width:30px;height:30px;cursor:pointer;line-height:1;
+    display:grid;place-items:center;flex:none}
+  .theme:hover{background:rgba(241,244,238,.14)}
+  .theme svg{width:15px;height:15px;display:block}
+
+  /* ---------- masthead ---------- */
+  .mast{background:var(--brand-bg);color:var(--brand-fg);padding:6px 0 30px}
+  .mast .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;opacity:.72;margin-bottom:10px}
+  .mast h1{font-size:clamp(26px,6.4vw,38px);letter-spacing:.02em;color:var(--brand-fg)}
+  .mast .by{margin:10px 0 0;font-size:14.5px;opacity:.82;max-width:34em}
+  .mast .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .stat{background:rgba(241,244,238,.12);border:1px solid rgba(241,244,238,.16);
+    border-radius:999px;padding:5px 13px;font-family:var(--mono);font-size:12.5px;letter-spacing:.04em}
+  .stat b{font-weight:500}
+
+  /* ---------- tabs ---------- */
+  .tabs{position:sticky;top:52px;z-index:30;background:var(--ground);border-bottom:1px solid var(--line)}
+  .tabs .wrap{display:flex;gap:2px;padding-top:8px;padding-bottom:0}
+  .tab{background:none;border:0;border-bottom:2px solid transparent;cursor:pointer;
+    padding:9px 14px 10px;font-size:15px;font-weight:500;color:var(--ink-2);white-space:nowrap}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-selected="true"]{color:var(--tea-ink);border-bottom-color:var(--sugar);font-weight:700}
+  .tab .n{font-family:var(--mono);font-size:11.5px;margin-left:5px;opacity:.7}
+
+  main{padding-top:26px}
+  .panel[hidden]{display:none}
+
+  /* ---------- steps ---------- */
+  .step{margin-bottom:26px}
+  .step-h{display:flex;align-items:baseline;gap:10px;margin-bottom:11px}
+  .step-h .num{font-family:var(--mono);font-size:11.5px;color:var(--sugar);letter-spacing:.14em;
+    padding-top:2px;flex:none}
+  .step-h h2{font-size:17.5px;letter-spacing:.02em}
+  .step-h .hint{font-size:12.5px;color:var(--ink-3);margin-left:auto;text-align:right}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm)}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:479px){.grid2{grid-template-columns:1fr}}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--ink-2);
+    letter-spacing:.06em;margin-bottom:6px}
+  .field input[type=text]{width:100%;background:var(--surface);border:1px solid var(--line);
+    border-radius:10px;padding:11px 13px;font-size:16px;transition:border-color .15s,box-shadow .15s}
+  .field input[type=text]::placeholder{color:var(--ink-3)}
+  .field input[type=text]:focus{outline:none;border-color:var(--tea);box-shadow:0 0 0 3px var(--tea-soft)}
+  .field.err input[type=text]{border-color:var(--danger);background:var(--danger-soft)}
+  .field .msg{font-size:12.5px;color:var(--danger);margin-top:5px;display:none}
+  .field.err .msg{display:block}
+
+  .recent{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .recent button{background:var(--sunken);border:1px solid transparent;border-radius:999px;
+    padding:4px 11px;font-size:13px;color:var(--ink-2);cursor:pointer}
+  .recent button:hover{border-color:var(--line);color:var(--ink)}
+
+  /* ---------- drink picker ---------- */
+  .search{position:relative;margin-bottom:10px}
+  .search input{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    padding:11px 38px 11px 13px;font-size:16px}
+  .search input:focus{outline:none;border-color:var(--tea);box-shadow:0 0 0 3px var(--tea-soft)}
+  .search .clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:28px;height:28px;
+    border:0;background:none;color:var(--ink-3);cursor:pointer;border-radius:50%;font-size:17px;line-height:1}
+  .search .clear:hover{background:var(--sunken);color:var(--ink)}
+
+  .menu{max-height:min(46vh,420px);overflow-y:auto;overflow-x:hidden;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    box-shadow:var(--shadow-sm);-webkit-overflow-scrolling:touch}
+  .cat{position:sticky;top:0;z-index:2;background:var(--sunken);
+    padding:6px 14px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--ink-2);
+    border-bottom:1px solid var(--line-soft);display:flex;justify-content:space-between}
+  .cat i{font-style:normal;opacity:.6}
+  .opt{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;
+    border:0;border-bottom:1px solid var(--line-soft);border-left:3px solid transparent;
+    padding:11px 14px 11px 13px;cursor:pointer;font-size:15.5px;color:var(--ink);transition:background .12s}
+  .opt:hover{background:var(--sunken)}
+  .opt .tick{width:17px;height:17px;flex:none;border:1.5px solid var(--line);border-radius:50%;
+    display:grid;place-items:center;transition:border-color .12s,background .12s}
+  .opt .tick svg{width:10px;height:10px;display:block;opacity:0;color:var(--on-sugar)}
+  .opt[aria-pressed="true"]{background:var(--sugar-soft);border-left-color:var(--sugar);font-weight:700}
+  .opt[aria-pressed="true"] .tick{background:var(--sugar);border-color:var(--sugar)}
+  .opt[aria-pressed="true"] .tick svg{opacity:1;color:var(--on-sugar)}
+  .opt .nm{flex:1;min-width:0}
+  .empty-menu{padding:22px 14px;text-align:center;color:var(--ink-3);font-size:14px}
+
+  /* ---------- chips ---------- */
+  .chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  @media (max-width:399px){.chips{grid-template-columns:repeat(2,1fr)}}
+  .chip{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 6px;
+    cursor:pointer;font-size:15px;font-weight:500;color:var(--ink-2);text-align:center;
+    transition:border-color .12s,background .12s,color .12s}
+  .chip:hover{border-color:var(--ink-3);color:var(--ink)}
+  .chip[aria-pressed="true"]{background:var(--sugar);border-color:var(--sugar);color:var(--on-sugar);font-weight:700}
+  .step.err .chips{outline:1px solid var(--danger);outline-offset:5px;border-radius:12px}
+
+  textarea.note{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    padding:11px 13px;font-size:15px;resize:vertical;min-height:48px}
+  textarea.note:focus{outline:none;border-color:var(--tea);box-shadow:0 0 0 3px var(--tea-soft)}
+
+  /* ---------- sticky submit bar ---------- */
+  .bar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--surface);
+    box-shadow:var(--shadow-bar);padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px))}
+  .bar .wrap{display:flex;align-items:center;gap:12px}
+  .bar .pick{min-width:0;flex:1}
+  .bar .pick .d{font-family:var(--serif);font-size:16px;font-weight:600;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .pick .s{font-size:12.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .pick .s b{color:var(--sugar);font-weight:500}
+  .send{background:var(--accent-btn);color:var(--on-accent);border:0;border-radius:999px;padding:13px 26px;
+    font-size:16px;font-weight:700;cursor:pointer;flex:none;letter-spacing:.04em}
+  .send:hover{filter:brightness(1.1)}
+  .send:disabled{opacity:.45;cursor:not-allowed;filter:none}
+
+  /* ---------- notices ---------- */
+  .notice{display:flex;gap:10px;align-items:flex-start;border-radius:10px;padding:11px 14px;
+    font-size:14px;line-height:1.55;margin-bottom:20px}
+  .notice.warn{background:var(--sugar-soft);color:var(--ink);border:1px solid var(--sugar)}
+  .notice.bad{background:var(--danger-soft);color:var(--ink);border:1px solid var(--danger)}
+  .notice.good{background:var(--tea-soft);color:var(--ink);border:1px solid var(--tea)}
+  .notice b{font-weight:700}
+  .notice[hidden]{display:none}
+
+  .toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));
+    transform:translateX(-50%) translateY(8px);z-index:60;background:var(--ink);color:var(--ground);
+    padding:10px 18px;border-radius:999px;font-size:14.5px;font-weight:500;box-shadow:var(--shadow-md);
+    opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100vw - 32px);text-align:center}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ---------- order list ---------- */
+  .ward-group{margin-bottom:18px}
+  .ward-head{display:flex;align-items:baseline;gap:9px;padding:0 2px 7px;border-bottom:1px solid var(--line)}
+  .ward-head h3{font-size:16px;letter-spacing:.03em}
+  .ward-head .c{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-left:auto}
+  .row{display:flex;align-items:flex-start;gap:12px;padding:11px 2px;border-bottom:1px solid var(--line-soft)}
+  .row .who{width:5.2em;flex:none;font-weight:700;font-size:14.5px;word-break:break-all}
+  .row .what{flex:1;min-width:0}
+  .row .what .d{font-size:15px}
+  .row .what .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;align-items:center}
+  .tag{font-size:11.5px;font-family:var(--mono);letter-spacing:.04em;padding:1.5px 8px;border-radius:999px;
+    background:var(--sunken);color:var(--ink-2)}
+  .tag.s{background:var(--sugar-soft);color:var(--sugar)}
+  .tag.me{background:var(--tea-soft);color:var(--tea-ink)}
+  .row .what .nt{font-size:12.5px;color:var(--ink-3);margin-top:3px}
+  .row .del{flex:none;background:none;border:0;color:var(--ink-3);cursor:pointer;padding:4px 6px;
+    border-radius:6px;font-size:12.5px;line-height:1.4}
+  .row .del:hover{background:var(--danger-soft);color:var(--danger)}
+
+  .blank{text-align:center;padding:46px 20px;color:var(--ink-3)}
+  .blank .big{font-family:var(--serif);font-size:19px;color:var(--ink-2);margin-bottom:6px}
+  .blank p{margin:0;font-size:14px}
+
+  /* ---------- summary ---------- */
+  .figures{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:22px}
+  .fig{background:var(--surface);padding:15px 12px}
+  .fig .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--ink-3)}
+  .fig .v{font-family:var(--mono);font-size:29px;font-weight:500;line-height:1.15;margin-top:3px;
+    color:var(--tea-ink);font-variant-numeric:tabular-nums}
+  .fig .v small{font-size:14px;color:var(--ink-3);margin-left:2px}
+
+  .sum-drink{border-bottom:1px solid var(--line);padding:12px 0}
+  .sum-drink:last-child{border-bottom:0}
+  .sum-drink .h{display:flex;align-items:baseline;gap:10px}
+  .sum-drink .h h3{font-size:16.5px;flex:1;min-width:0}
+  .sum-drink .h .t{font-family:var(--mono);font-size:15px;color:var(--sugar);font-variant-numeric:tabular-nums}
+  .sum-drink ul{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:3px}
+  .sum-drink li{display:flex;align-items:baseline;gap:8px;font-size:14px;color:var(--ink-2)}
+  .sum-drink li .sp{flex:1;border-bottom:1px dotted var(--line);min-width:12px;transform:translateY(-3px)}
+  .sum-drink li .n{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+
+  .actions{display:flex;flex-wrap:wrap;gap:9px;margin:20px 0 8px}
+  .btn{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:9px 17px;
+    font-size:14.5px;font-weight:500;cursor:pointer;color:var(--ink)}
+  .btn:hover{border-color:var(--ink-3)}
+  .btn.solid{background:var(--accent-btn);border-color:var(--accent-btn);color:var(--on-accent);font-weight:700}
+  .btn.solid:hover{filter:brightness(1.1)}
+  .btn.quiet{color:var(--ink-2);background:transparent;border-color:transparent}
+  .btn.quiet:hover{background:var(--sunken);border-color:transparent}
+  .btn.warn{color:var(--danger);border-color:var(--danger-soft);background:var(--danger-soft)}
+
+  details.host{margin-top:26px;border-top:1px solid var(--line);padding-top:16px}
+  details.host summary{cursor:pointer;font-size:14px;color:var(--ink-2);font-weight:500;list-style:none;
+    display:flex;align-items:center;gap:7px}
+  details.host summary::-webkit-details-marker{display:none}
+  details.host summary::before{content:"＋";font-family:var(--mono);color:var(--sugar);font-size:13px}
+  details.host[open] summary::before{content:"−"}
+  details.host .body{padding-top:14px}
+  details.host h3{font-size:14.5px;font-family:var(--sans);font-weight:700;margin:16px 0 7px}
+  details.host h3:first-child{margin-top:0}
+  details.host p.note{font-size:13px;color:var(--ink-3);margin:0 0 9px}
+  textarea.paste{width:100%;min-height:104px;background:var(--surface);border:1px solid var(--line);
+    border-radius:10px;padding:11px 13px;font-size:14px;font-family:var(--mono);line-height:1.6;resize:vertical}
+  textarea.paste:focus{outline:none;border-color:var(--tea);box-shadow:0 0 0 3px var(--tea-soft)}
+
+  .copybox{width:100%;min-height:150px;background:var(--sunken);border:1px solid var(--line);
+    border-radius:10px;padding:11px 13px;font-size:13px;font-family:var(--mono);line-height:1.7;
+    margin-top:12px;resize:vertical}
+  .copybox[hidden]{display:none}
+
+  footer{padding:34px 0 10px;color:var(--ink-3);font-size:12.5px;line-height:1.7}
+  footer .rule{height:1px;background:var(--line);margin-bottom:14px}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+      transition-duration:.001ms!important}
+  }
+</style>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="mark">
+      <b>飲料點單</b>
+      <span>NEUROPSYCH · WARD</span>
+    </div>
+    <div class="live"><span class="dot" id="dot"></span><span id="liveTxt">連線中</span></div>
+    <button class="theme" id="themeBtn" type="button" aria-label="切換深淺色">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2M12 19.4v2M2.6 12h2M19.4 12h2M5.4 5.4l1.4 1.4M17.2 17.2l1.4 1.4M18.6 5.4l-1.4 1.4M6.8 17.2l-1.4 1.4"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="mast">
+  <div class="wrap">
+    <p class="eyebrow">衛生福利部嘉南療養院 · 一般精神科</p>
+    <h1 id="mTitle">這杯我請，辛苦了</h1>
+    <p class="by" id="mBy">病房這陣子狀況多，謝謝大家撐住。填一下病房、姓名和你想喝的，我一起訂。—— 沈正哲 主任</p>
+    <div class="meta">
+      <span class="stat mono">已登記 <b id="sCup">0</b> 杯</span>
+      <span class="stat mono"><b id="sPpl">0</b> 位同仁</span>
+      <span class="stat mono"><b id="sWard">0</b> 個病房</span>
+      <span class="stat mono" id="sDue" hidden></span>
+    </div>
+  </div>
+</div>
+
+<nav class="tabs">
+  <div class="wrap" role="tablist" aria-label="頁面切換">
+    <button class="tab" id="tab-order" role="tab" aria-selected="true" aria-controls="p-order" type="button">我要點</button>
+    <button class="tab" id="tab-list" role="tab" aria-selected="false" aria-controls="p-list" type="button">訂單<span class="n" id="tabN">0</span></button>
+    <button class="tab" id="tab-sum" role="tab" aria-selected="false" aria-controls="p-sum" type="button">彙整</button>
+  </div>
+</nav>
+
+<main>
+  <!-- ============ 我要點 ============ -->
+  <section class="panel wrap" id="p-order" role="tabpanel" aria-labelledby="tab-order">
+
+    <div class="notice bad" id="nOffline" hidden>
+      <span><b>目前連不上訂單資料庫。</b>這個連結需要用院內同一個 Claude 組織帳號登入才能寫入。你仍可以完成選擇，再用下方按鈕複製訂單文字貼到 LINE 群組。</span>
+    </div>
+    <div class="notice warn" id="nClosed" hidden>
+      <span><b>訂單已結單。</b>如需補點，請直接告知主辦人。</span>
+    </div>
+
+    <div class="step" id="st1">
+      <div class="step-h">
+        <span class="num">01</span>
+        <h2>你是哪個病房、怎麼稱呼</h2>
+      </div>
+      <div class="grid2">
+        <div class="field" id="fWard">
+          <label for="iWard">病房</label>
+          <input type="text" id="iWard" list="wards" placeholder="例：康寧一" autocomplete="off" maxlength="20">
+          <datalist id="wards"></datalist>
+          <div class="msg">請填病房</div>
+          <div class="recent" id="wardChips"></div>
+        </div>
+        <div class="field" id="fName">
+          <label for="iName">姓名</label>
+          <input type="text" id="iName" placeholder="例：王小美" autocomplete="off" maxlength="20">
+          <div class="msg">請填姓名</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" id="st2">
+      <div class="step-h">
+        <span class="num">02</span>
+        <h2>選一杯</h2>
+        <span class="hint mono">42 品項</span>
+      </div>
+      <div class="search">
+        <input type="text" id="iSearch" placeholder="搜尋品名，例如「黑糖」「烏龍」" autocomplete="off" aria-label="搜尋飲料">
+        <button class="clear" id="bClear" type="button" aria-label="清除搜尋" hidden>×</button>
+      </div>
+      <div class="menu" id="menu"></div>
+    </div>
+
+    <div class="step" id="st3">
+      <div class="step-h">
+        <span class="num">03</span>
+        <h2>甜度</h2>
+      </div>
+      <div class="chips" id="sugarChips" role="group" aria-label="甜度"></div>
+    </div>
+
+    <div class="step" id="st4">
+      <div class="step-h">
+        <span class="num">04</span>
+        <h2>冰塊</h2>
+      </div>
+      <div class="chips" id="iceChips" role="group" aria-label="冰塊"></div>
+    </div>
+
+    <div class="step">
+      <div class="step-h">
+        <span class="num">05</span>
+        <h2>備註</h2>
+        <span class="hint">可不填</span>
+      </div>
+      <textarea class="note" id="iNote" rows="1" maxlength="60" placeholder="例：加珍珠、常溫、不要吸管"></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn quiet" id="bCopyMine" type="button">複製我的訂單文字</button>
+    </div>
+    <textarea class="copybox" id="copyMine" hidden readonly aria-label="訂單文字"></textarea>
+  </section>
+
+  <!-- ============ 訂單 ============ -->
+  <section class="panel wrap" id="p-list" role="tabpanel" aria-labelledby="tab-list" hidden>
+    <div id="listBody"></div>
+  </section>
+
+  <!-- ============ 彙整 ============ -->
+  <section class="panel wrap" id="p-sum" role="tabpanel" aria-labelledby="tab-sum" hidden>
+    <div class="figures">
+      <div class="fig"><div class="k">總杯數</div><div class="v" id="fCup">0</div></div>
+      <div class="fig"><div class="k">同仁</div><div class="v" id="fPpl">0<small>位</small></div></div>
+      <div class="fig"><div class="k">病房</div><div class="v" id="fWardN">0<small>房</small></div></div>
+    </div>
+
+    <div class="step-h" style="margin-bottom:4px">
+      <span class="num">給店家</span>
+      <h2>訂購清單</h2>
+    </div>
+    <div id="sumBody"></div>
+
+    <div class="actions">
+      <button class="btn solid" id="bCopySum" type="button">複製訂購清單</button>
+      <button class="btn" id="bCsv" type="button" hidden>下載 CSV</button>
+      <button class="btn quiet" id="bCopyCsv" type="button">複製明細（試算表用）</button>
+    </div>
+    <textarea class="copybox" id="copyOut" hidden readonly aria-label="彙整文字"></textarea>
+
+    <details class="host">
+      <summary>主辦人專區</summary>
+      <div class="body">
+        <h3>從 LINE 訊息代填</h3>
+        <p class="note">把同仁在群組回報的文字整段貼上，一行一筆。系統會自動辨識品名、甜度、冰塊，並把品名前面的字當成病房與姓名。</p>
+        <textarea class="paste" id="iPaste" placeholder="康寧一 王小美 黑糖珍珠鮮奶 半糖 少冰&#10;康寧二 陳大明 珍珠奶茶 無糖 去冰"></textarea>
+        <div class="actions" style="margin:10px 0 0">
+          <button class="btn" id="bParse" type="button">辨識並預覽</button>
+          <button class="btn solid" id="bImport" type="button" hidden>確認匯入</button>
+        </div>
+        <div id="parseOut"></div>
+
+        <h3>活動設定</h3>
+        <div class="grid2">
+          <div class="field">
+            <label for="iTitle">標題</label>
+            <input type="text" id="iTitle" maxlength="24" placeholder="這杯我請，辛苦了">
+          </div>
+          <div class="field">
+            <label for="iDue">截止時間</label>
+            <input type="text" id="iDue" maxlength="24" placeholder="例：今天 15:00 截止">
+          </div>
+        </div>
+        <div class="actions" style="margin:12px 0 0">
+          <button class="btn" id="bSaveMeta" type="button">儲存設定</button>
+          <button class="btn" id="bClose" type="button">結單</button>
+          <button class="btn warn" id="bWipe" type="button">清空全部訂單</button>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <footer class="wrap">
+    <div class="rule"></div>
+    <div>訂單即時共用，同仁送出後這裡會立刻更新。若填錯，可在「訂單」頁刪除自己那筆重填。</div>
+  </footer>
+</main>
+
+<div class="bar" id="bar">
+  <div class="wrap">
+    <div class="pick">
+      <div class="d" id="barDrink">尚未選飲料</div>
+      <div class="s" id="barSub">往下選甜度與冰塊</div>
+    </div>
+    <button class="send" id="bSend" type="button">送出</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ================= 資料 ================= */
+  var MENU = [
+    {cat:"黑糖鮮奶", items:["黑糖珍珠鮮奶","黑糖珍珠厚鮮奶","黑糖布蕾珍珠鮮奶","黑糖粉粿鮮奶","黑糖綿芋鮮奶","黑糖仙草鮮奶","黑糖鮮奶"]},
+    {cat:"手熬黑糖茶飲", items:["手熬黑糖檸檬","手熬黑糖話梅檸檬","手熬黑糖冬瓜茶","手熬黑糖冬瓜不知春","黑糖檸檬冬瓜"]},
+    {cat:"原葉純茶", items:["蜜夏紅","不知春","雲霧烏龍","復刻紅茶","木梨茉莉","山茶花採蜜","一包蕎麥復刻","一包蕎麥冬瓜","焙香蕎麥"]},
+    {cat:"奶茶・拿鐵", items:["珍珠奶茶","煮母奶茶","泰泰鮮奶茶","姍姍紅茶拿鐵","琥珀烏龍拿鐵","十份芋芋鮮奶","芋珍雙Q奶茶","波波粿粿鮮奶茶","手採烏龍奶","茉白奶綠"]},
+    {cat:"鮮果・花草特調", items:["西瓜烏龍","小玉西瓜茉莉","小玉西瓜冰米露","多多綠","百香翡翠茉莉","百香翡翠不知春","百香雙響","蜂蜜檸檬菊花茶","蜂蜜菊花茶","山茶花採蜜（檸檬桂花）","熟梅冰茶"]}
+  ];
+  var SUGAR = ["全糖","半糖","3分糖","無糖"];
+  var ICE   = ["正常冰","少冰","微冰","去冰"];
+  var SUGAR_ALIAS = {"三分糖":"3分糖","3 分糖":"3分糖","微糖":"3分糖","正常糖":"全糖","全糖":"全糖"};
+  var ICE_ALIAS   = {"正常冰":"正常冰","全冰":"正常冰","免冰":"去冰","走冰":"去冰","常溫":"去冰"};
+
+  var ALL = [];
+  MENU.forEach(function(g){ g.items.forEach(function(n){ ALL.push({name:n, cat:g.cat}); }); });
+  var BY_LEN = ALL.map(function(d){return d.name;}).sort(function(a,b){return b.length-a.length;});
+  var CAT_OF = {};
+  ALL.forEach(function(d){ CAT_OF[d.name]=d.cat; });
+
+  /* ================= 小工具 ================= */
+  var $ = function(id){ return document.getElementById(id); };
+  function esc(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+  function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+
+  var toastT = null;
+  function toast(msg){
+    var t = $("toast");
+    t.textContent = msg;
+    t.classList.add("on");
+    clearTimeout(toastT);
+    toastT = setTimeout(function(){ t.classList.remove("on"); }, 2600);
+  }
+
+  function copyText(str, boxId){
+    var done = function(){ toast("已複製"); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(str).then(done, function(){ fallback(); });
+    } else { fallback(); }
+    function fallback(){
+      var box = $(boxId);
+      box.value = str;
+      box.hidden = false;
+      box.focus();
+      box.setSelectionRange(0, str.length);
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch(e){}
+      toast(ok ? "已複製" : "無法自動複製，請長按選取下方文字");
+    }
+  }
+
+  function two(n){ return (n<10?"0":"")+n; }
+  function hhmm(ts){
+    var d = new Date(ts);
+    if (isNaN(d.getTime())) return "";
+    return two(d.getHours())+":"+two(d.getMinutes());
+  }
+
+  /* ================= 狀態 ================= */
+  var S = {
+    view:"order",
+    ward: lsGet("ncd.ward") || "",
+    name: lsGet("ncd.name") || "",
+    drink:"", sugar:"", ice:"", note:"",
+    q:"",
+    orders:[],
+    meta:{title:"", due:"", closed:false},
+    db:null, dl:null, ready:false, offline:false,
+    mine:{},
+    pending:null,
+    sending:false
+  };
+  try { S.mine = JSON.parse(lsGet("ncd.mine") || "{}") || {}; } catch(e){ S.mine = {}; }
+  function rememberMine(id){ S.mine[id] = 1; lsSet("ncd.mine", JSON.stringify(S.mine)); }
+  function forgetMine(id){ delete S.mine[id]; lsSet("ncd.mine", JSON.stringify(S.mine)); }
+
+  /* ================= 主題 ================= */
+  $("themeBtn").addEventListener("click", function(){
+    var r = document.documentElement, cur = r.getAttribute("data-theme");
+    if (!cur) cur = window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light";
+    r.setAttribute("data-theme", cur === "dark" ? "light" : "dark");
+  });
+
+  /* ================= 分頁 ================= */
+  var TABS = ["order","list","sum"];
+  function show(v){
+    S.view = v;
+    TABS.forEach(function(k){
+      $("tab-"+k).setAttribute("aria-selected", k===v ? "true" : "false");
+      $("p-"+k).hidden = (k !== v);
+    });
+    $("bar").style.display = (v === "order") ? "" : "none";
+    document.body.classList.toggle("no-bar", v !== "order");
+    window.scrollTo(0, 0);
+  }
+  TABS.forEach(function(k){ $("tab-"+k).addEventListener("click", function(){ show(k); }); });
+
+  /* ================= 表單：病房 / 姓名 ================= */
+  $("iWard").value = S.ward;
+  $("iName").value = S.name;
+  $("iWard").addEventListener("input", function(){
+    S.ward = this.value; $("fWard").classList.remove("err"); syncBar();
+  });
+  $("iName").addEventListener("input", function(){
+    S.name = this.value; $("fName").classList.remove("err"); syncBar();
+  });
+  $("iNote").addEventListener("input", function(){ S.note = this.value; });
+
+  function renderWardHints(){
+    var counts = {};
+    S.orders.forEach(function(o){ if(o.ward) counts[o.ward] = (counts[o.ward]||0)+1; });
+    var names = Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a]; });
+
+    $("wards").innerHTML = names.map(function(w){ return '<option value="'+esc(w)+'"></option>'; }).join("");
+
+    var chips = names.slice(0,6);
+    if (S.ward && chips.indexOf(S.ward) < 0) chips.unshift(S.ward);
+    $("wardChips").innerHTML = chips.slice(0,6).map(function(w){
+      return '<button type="button" data-w="'+esc(w)+'">'+esc(w)+'</button>';
+    }).join("");
+  }
+  $("wardChips").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-w]");
+    if (!b) return;
+    S.ward = b.getAttribute("data-w");
+    $("iWard").value = S.ward;
+    $("fWard").classList.remove("err");
+    syncBar();
+  });
+
+  /* ================= 飲料清單 ================= */
+  function renderMenu(){
+    var q = S.q.trim().toLowerCase();
+    var html = "", hit = 0;
+    MENU.forEach(function(g){
+      var items = g.items.filter(function(n){ return !q || n.toLowerCase().indexOf(q) >= 0; });
+      if (!items.length) return;
+      hit += items.length;
+      html += '<div class="cat"><span>'+esc(g.cat)+'</span><i>'+items.length+'</i></div>';
+      items.forEach(function(n){
+        var on = (S.drink === n);
+        html += '<button class="opt" type="button" role="checkbox" data-d="'+esc(n)+'" aria-pressed="'+(on?"true":"false")+'">'
+             +  '<span class="tick"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.4l2.6 2.6L10 3.4"/></svg></span>'
+             +  '<span class="nm">'+esc(n)+'</span></button>';
+      });
+    });
+    if (!hit) html = '<div class="empty-menu">找不到「'+esc(S.q)+'」，換個關鍵字試試</div>';
+    $("menu").innerHTML = html;
+  }
+  $("menu").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-d]");
+    if (!b) return;
+    S.drink = b.getAttribute("data-d");
+    $("st2").classList.remove("err");
+    renderMenu();
+    syncBar();
+  });
+  $("iSearch").addEventListener("input", function(){
+    S.q = this.value;
+    $("bClear").hidden = !this.value;
+    renderMenu();
+  });
+  $("bClear").addEventListener("click", function(){
+    S.q = ""; $("iSearch").value = ""; this.hidden = true; renderMenu(); $("iSearch").focus();
+  });
+
+  /* ================= 甜度 / 冰塊 ================= */
+  function renderChips(box, list, cur){
+    $(box).innerHTML = list.map(function(v){
+      return '<button class="chip" type="button" role="checkbox" data-v="'+esc(v)+'" aria-pressed="'+(cur===v?"true":"false")+'">'+esc(v)+'</button>';
+    }).join("");
+  }
+  $("sugarChips").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-v]"); if(!b) return;
+    S.sugar = b.getAttribute("data-v"); $("st3").classList.remove("err");
+    renderChips("sugarChips", SUGAR, S.sugar); syncBar();
+  });
+  $("iceChips").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-v]"); if(!b) return;
+    S.ice = b.getAttribute("data-v"); $("st4").classList.remove("err");
+    renderChips("iceChips", ICE, S.ice); syncBar();
+  });
+
+  /* ================= 底部列 ================= */
+  function syncBar(){
+    $("barDrink").textContent = S.drink || "尚未選飲料";
+    var bits = [];
+    if (S.sugar) bits.push(S.sugar);
+    if (S.ice) bits.push(S.ice);
+    var sub = $("barSub");
+    if (!S.drink) sub.innerHTML = "先在上面挑一杯";
+    else if (bits.length < 2) sub.innerHTML = "還要選 <b>"+(S.sugar?"冰塊":(S.ice?"甜度":"甜度與冰塊"))+"</b>";
+    else sub.innerHTML = "<b>"+esc(bits.join(" ／ "))+"</b>";
+    $("bSend").disabled = S.sending || S.meta.closed;
+  }
+
+  function orderText(){
+    return [S.ward, S.name, S.drink + "／" + S.sugar + "／" + S.ice + (S.note ? "（"+S.note+"）" : "")]
+      .filter(Boolean).join(" ");
+  }
+
+  function validate(){
+    var ok = true;
+    if (!S.ward.trim()){ $("fWard").classList.add("err"); ok = false; }
+    if (!S.name.trim()){ $("fName").classList.add("err"); ok = false; }
+    if (!S.drink){ $("st2").classList.add("err"); ok = false; }
+    if (!S.sugar){ $("st3").classList.add("err"); ok = false; }
+    if (!S.ice){ $("st4").classList.add("err"); ok = false; }
+    if (!ok){
+      var bad = document.querySelector(".field.err, .step.err");
+      if (bad) bad.scrollIntoView({block:"center", behavior:"smooth"});
+      toast("還有欄位沒填完");
+    }
+    return ok;
+  }
+
+  $("bCopyMine").addEventListener("click", function(){
+    if (!validate()) return;
+    copyText(orderText(), "copyMine");
+  });
+
+  /* ================= 送出 ================= */
+  var ERR = {
+    quota_exceeded:"訂單數量已達上限，請聯絡主辦人。",
+    resource_exhausted:"同時操作的人太多，請等幾秒再送一次。",
+    invalid_argument:"這筆資料無法寫入，請檢查欄位長度。",
+    revoked:"連線權限已變更，請重新整理頁面。",
+    not_granted:"這個頁面沒有訂單資料庫的權限。",
+    capability_disabled:"這個瀏覽環境無法連線訂單資料庫。"
+  };
+  function errMsg(e){ return (e && ERR[e.code]) || "送出失敗，請再試一次。"; }
+
+  $("bSend").addEventListener("click", function(){
+    if (S.meta.closed){ toast("訂單已結單"); return; }
+    if (!validate()) return;
+    if (!S.db){
+      copyText(orderText(), "copyMine");
+      toast("目前無法連線，已複製訂單文字");
+      return;
+    }
+    var payload = {
+      ward: S.ward.trim(), name: S.name.trim(), drink: S.drink,
+      sugar: S.sugar, ice: S.ice, note: S.note.trim(),
+      ts: Date.now(), createdAt: new Date().toISOString(), via:"web"
+    };
+    S.sending = true; $("bSend").disabled = true; $("bSend").textContent = "送出中";
+    var ref = S.db.collection("orders").doc();
+    ref.set(payload).then(function(){
+      rememberMine(ref.id);
+      lsSet("ncd.ward", payload.ward);
+      lsSet("ncd.name", payload.name);
+      S.drink = ""; S.sugar = ""; S.ice = ""; S.note = "";
+      $("iNote").value = ""; $("iSearch").value = ""; S.q = ""; $("bClear").hidden = true;
+      renderMenu(); renderChips("sugarChips", SUGAR, ""); renderChips("iceChips", ICE, "");
+      toast("已送出，" + payload.name + " 的" + payload.drink);
+      show("list");
+    })["catch"](function(e){
+      toast(errMsg(e));
+    }).then(function(){
+      S.sending = false; $("bSend").textContent = "送出"; syncBar();
+    });
+  });
+
+  /* ================= 訂單列表 ================= */
+  function renderList(){
+    var box = $("listBody");
+    if (!S.orders.length){
+      box.innerHTML = '<div class="blank"><div class="big">還沒有人點</div>'
+        + '<p>' + (S.offline ? "訂單資料庫連不上，暫時看不到大家的登記。" : "第一杯就交給你了。") + '</p></div>';
+      return;
+    }
+    var groups = {}, order = [];
+    S.orders.forEach(function(o){
+      var w = o.ward || "未填病房";
+      if (!groups[w]){ groups[w] = []; order.push(w); }
+      groups[w].push(o);
+    });
+    order.sort(function(a,b){ return groups[b].length - groups[a].length || a.localeCompare(b,"zh-Hant"); });
+
+    box.innerHTML = order.map(function(w){
+      var rows = groups[w].slice().sort(function(a,b){ return (a.ts||0) - (b.ts||0); }).map(function(o){
+        var mine = !!S.mine[o.id];
+        return '<div class="row">'
+          + '<div class="who">' + esc(o.name || "—") + '</div>'
+          + '<div class="what"><div class="d">' + esc(o.drink) + '</div>'
+          + '<div class="tags"><span class="tag s">' + esc(o.sugar) + '</span>'
+          + '<span class="tag">' + esc(o.ice) + '</span>'
+          + (mine ? '<span class="tag me">我的</span>' : '')
+          + (o.via === "line" ? '<span class="tag">代填</span>' : '')
+          + '<span class="tag">' + hhmm(o.ts) + '</span></div>'
+          + (o.note ? '<div class="nt">' + esc(o.note) + '</div>' : '')
+          + '</div>'
+          + '<button class="del" type="button" data-id="' + esc(o.id) + '" data-nm="' + esc(o.name) + '">刪除</button>'
+          + '</div>';
+      }).join("");
+      return '<div class="ward-group"><div class="ward-head"><h3>' + esc(w) + '</h3>'
+        + '<span class="c mono">' + groups[w].length + ' 杯</span></div>' + rows + '</div>';
+    }).join("");
+  }
+  $("listBody").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-id]");
+    if (!b || !S.db) return;
+    var id = b.getAttribute("data-id"), nm = b.getAttribute("data-nm");
+    if (!window.confirm("確定刪除 " + nm + " 這一筆訂單？")) return;
+    S.db.doc("orders/" + id).delete().then(function(){
+      forgetMine(id); toast("已刪除");
+    })["catch"](function(e){ toast(errMsg(e)); });
+  });
+
+  /* ================= 彙整 ================= */
+  function aggregate(){
+    var byDrink = {}, seq = [];
+    S.orders.forEach(function(o){
+      var d = o.drink || "未指定";
+      if (!byDrink[d]){ byDrink[d] = {name:d, total:0, combos:{}, order:[]}; seq.push(byDrink[d]); }
+      var g = byDrink[d];
+      g.total++;
+      var k = (o.sugar||"—") + "／" + (o.ice||"—");
+      if (!g.combos[k]){ g.combos[k] = 0; g.order.push(k); }
+      g.combos[k]++;
+    });
+    seq.sort(function(a,b){ return b.total - a.total || a.name.localeCompare(b.name,"zh-Hant"); });
+    seq.forEach(function(g){
+      g.order.sort(function(a,b){ return g.combos[b] - g.combos[a] || a.localeCompare(b,"zh-Hant"); });
+    });
+    return seq;
+  }
+
+  function renderSum(){
+    var people = {}, wards = {};
+    S.orders.forEach(function(o){
+      people[(o.ward||"") + "/" + (o.name||"")] = 1;
+      if (o.ward) wards[o.ward] = 1;
+    });
+    $("fCup").textContent = S.orders.length;
+    $("fPpl").innerHTML = Object.keys(people).length + "<small>位</small>";
+    $("fWardN").innerHTML = Object.keys(wards).length + "<small>房</small>";
+
+    var seq = aggregate(), box = $("sumBody");
+    if (!seq.length){
+      box.innerHTML = '<div class="blank"><div class="big">還沒有訂單</div><p>同仁送出後，這裡會自動整理成可以直接報給店家的清單。</p></div>';
+      return;
+    }
+    box.innerHTML = seq.map(function(g){
+      var lis = g.order.map(function(k){
+        return '<li><span>' + esc(k) + '</span><span class="sp"></span><span class="n">' + g.combos[k] + '</span></li>';
+      }).join("");
+      return '<div class="sum-drink"><div class="h"><h3>' + esc(g.name) + '</h3>'
+        + '<span class="t mono">' + g.total + ' 杯</span></div><ul>' + lis + '</ul></div>';
+    }).join("");
+  }
+
+  function sumText(){
+    var d = new Date();
+    var head = "嘉南療養院 一般精神科 飲料訂購\n"
+      + d.getFullYear() + "/" + two(d.getMonth()+1) + "/" + two(d.getDate())
+      + " 彙整 · 共 " + S.orders.length + " 杯\n";
+    var body = aggregate().map(function(g){
+      return "\n" + g.name + "  " + g.total + " 杯\n"
+        + g.order.map(function(k){ return "  " + k + "  x" + g.combos[k]; }).join("\n");
+    }).join("\n");
+    return head + body + "\n";
+  }
+
+  function csvText(){
+    var rows = [["病房","姓名","飲料","甜度","冰塊","備註","登記時間"]];
+    S.orders.slice().sort(function(a,b){ return (a.ts||0)-(b.ts||0); }).forEach(function(o){
+      rows.push([o.ward||"", o.name||"", o.drink||"", o.sugar||"", o.ice||"", o.note||"", hhmm(o.ts)]);
+    });
+    return "﻿" + rows.map(function(r){
+      return r.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(",");
+    }).join("\r\n");
+  }
+
+  $("bCopySum").addEventListener("click", function(){
+    if (!S.orders.length){ toast("目前沒有訂單"); return; }
+    copyText(sumText(), "copyOut");
+  });
+  $("bCopyCsv").addEventListener("click", function(){
+    if (!S.orders.length){ toast("目前沒有訂單"); return; }
+    copyText(csvText().replace(/^﻿/, ""), "copyOut");
+  });
+  $("bCsv").addEventListener("click", function(){
+    if (!S.dl) return;
+    if (!S.orders.length){ toast("目前沒有訂單"); return; }
+    var d = new Date();
+    var fn = "飲料訂單_" + d.getFullYear() + two(d.getMonth()+1) + two(d.getDate()) + ".csv";
+    S.dl.save({filename: fn, data: csvText()}).then(function(){
+      toast("已下載");
+    })["catch"](function(e){
+      if (e && e.code === "declined") return;
+      toast("下載失敗，改用「複製明細」也可以。");
+    });
+  });
+
+  /* ================= 代填解析 ================= */
+  function parseLine(raw){
+    var s = String(raw).trim();
+    if (!s) return null;
+    s = s.replace(/^(上午|下午|AM|PM)?\s*\d{1,2}:\d{2}\s*/i, "");
+    var drink = null, i;
+    for (i = 0; i < BY_LEN.length; i++){
+      if (s.indexOf(BY_LEN[i]) >= 0){ drink = BY_LEN[i]; break; }
+    }
+    if (!drink) return null;
+    var tail = s.slice(s.indexOf(drink) + drink.length);
+    var head = s.slice(0, s.indexOf(drink));
+
+    var sugar = "", ice = "";
+    var sKeys = SUGAR.concat(Object.keys(SUGAR_ALIAS));
+    sKeys.sort(function(a,b){ return b.length - a.length; });
+    for (i = 0; i < sKeys.length; i++){
+      if (tail.indexOf(sKeys[i]) >= 0 || head.indexOf(sKeys[i]) >= 0){
+        sugar = SUGAR_ALIAS[sKeys[i]] || sKeys[i]; break;
+      }
+    }
+    var iKeys = ICE.concat(Object.keys(ICE_ALIAS));
+    iKeys.sort(function(a,b){ return b.length - a.length; });
+    for (i = 0; i < iKeys.length; i++){
+      if (tail.indexOf(iKeys[i]) >= 0 || head.indexOf(iKeys[i]) >= 0){
+        ice = ICE_ALIAS[iKeys[i]] || iKeys[i]; break;
+      }
+    }
+    var parts = head.split(/[・·、,，\/|\s\-–—:：（(]+/).filter(Boolean);
+    var ward = "", name = "";
+    if (parts.length >= 2){ ward = parts[0]; name = parts[1]; }
+    else if (parts.length === 1){ name = parts[0]; }
+    return {ward:ward, name:name, drink:drink, sugar:sugar, ice:ice, ok:!!(sugar && ice && name)};
+  }
+
+  $("bParse").addEventListener("click", function(){
+    var lines = $("iPaste").value.split(/\r?\n/);
+    var rows = [], skipped = 0;
+    lines.forEach(function(l){
+      if (!l.trim()) return;
+      var r = parseLine(l);
+      if (r) rows.push(r); else skipped++;
+    });
+    S.pending = rows;
+    var out = $("parseOut");
+    if (!rows.length){
+      out.innerHTML = '<div class="notice bad" style="margin:12px 0 0"><span>沒有辨識到任何一筆。每行至少要有清單上的品名。</span></div>';
+      $("bImport").hidden = true;
+      return;
+    }
+    var bad = rows.filter(function(r){ return !r.ok; }).length;
+    out.innerHTML = '<div class="notice ' + (bad||skipped ? "warn" : "good") + '" style="margin:12px 0 0"><span>辨識到 <b>'
+      + rows.length + '</b> 筆'
+      + (bad ? '，其中 <b>' + bad + '</b> 筆缺姓名或糖冰，匯入後請在「訂單」頁確認' : '')
+      + (skipped ? '；有 <b>' + skipped + '</b> 行無法辨識已略過' : '') + '。</span></div>'
+      + rows.map(function(r){
+          return '<div class="row"><div class="who">' + esc(r.name || "—") + '</div><div class="what">'
+            + '<div class="d">' + esc(r.drink) + '</div><div class="tags">'
+            + '<span class="tag">' + esc(r.ward || "未填病房") + '</span>'
+            + '<span class="tag s">' + esc(r.sugar || "缺甜度") + '</span>'
+            + '<span class="tag">' + esc(r.ice || "缺冰塊") + '</span></div></div></div>';
+        }).join("");
+    $("bImport").hidden = false;
+  });
+
+  $("bImport").addEventListener("click", function(){
+    if (!S.db || !S.pending || !S.pending.length) return;
+    var rows = S.pending, btn = this;
+    btn.disabled = true; btn.textContent = "匯入中";
+    var now = Date.now();
+    Promise.all(rows.map(function(r, i){
+      return S.db.collection("orders").doc().set({
+        ward:r.ward, name:r.name, drink:r.drink,
+        sugar:r.sugar || "未指定", ice:r.ice || "未指定", note:"",
+        ts: now + i, createdAt: new Date(now + i).toISOString(), via:"line"
+      });
+    })).then(function(){
+      toast("已匯入 " + rows.length + " 筆");
+      $("iPaste").value = ""; $("parseOut").innerHTML = ""; btn.hidden = true; S.pending = null;
+    })["catch"](function(e){
+      toast(errMsg(e));
+    }).then(function(){
+      btn.disabled = false; btn.textContent = "確認匯入";
+    });
+  });
+
+  /* ================= 活動設定 ================= */
+  function applyMeta(){
+    $("mTitle").textContent = S.meta.title || "這杯我請，辛苦了";
+    var due = $("sDue");
+    if (S.meta.closed){ due.hidden = false; due.textContent = "已結單"; }
+    else if (S.meta.due){ due.hidden = false; due.textContent = S.meta.due; }
+    else due.hidden = true;
+    $("nClosed").hidden = !S.meta.closed;
+    $("bClose").textContent = S.meta.closed ? "重新開放" : "結單";
+    $("iTitle").value = S.meta.title || "";
+    $("iDue").value = S.meta.due || "";
+    syncBar();
+  }
+  function writeMeta(patch){
+    if (!S.db){ toast("目前無法連線"); return; }
+    var next = {title:S.meta.title, due:S.meta.due, closed:S.meta.closed};
+    for (var k in patch) next[k] = patch[k];
+    S.db.doc("meta/event").set(next).then(function(){ toast("已更新"); })
+      ["catch"](function(e){ toast(errMsg(e)); });
+  }
+  $("bSaveMeta").addEventListener("click", function(){
+    writeMeta({title: $("iTitle").value.trim(), due: $("iDue").value.trim()});
+  });
+  $("bClose").addEventListener("click", function(){ writeMeta({closed: !S.meta.closed}); });
+  $("bWipe").addEventListener("click", function(){
+    if (!S.db) return;
+    if (!S.orders.length){ toast("目前沒有訂單"); return; }
+    if (!window.confirm("確定刪除全部 " + S.orders.length + " 筆訂單？此動作無法復原。")) return;
+    var ids = S.orders.map(function(o){ return o.id; });
+    Promise.all(ids.map(function(id){ return S.db.doc("orders/" + id).delete(); }))
+      .then(function(){ ids.forEach(forgetMine); toast("已清空"); })
+      ["catch"](function(e){ toast(errMsg(e)); });
+  });
+
+  /* ================= 全域更新 ================= */
+  function refresh(){
+    var people = {}, wards = {};
+    S.orders.forEach(function(o){
+      people[(o.ward||"") + "/" + (o.name||"")] = 1;
+      if (o.ward) wards[o.ward] = 1;
+    });
+    $("sCup").textContent = S.orders.length;
+    $("sPpl").textContent = Object.keys(people).length;
+    $("sWard").textContent = Object.keys(wards).length;
+    $("tabN").textContent = S.orders.length;
+    renderWardHints();
+    renderList();
+    renderSum();
+  }
+
+  /* ================= 首次繪製（不等連線） ================= */
+  renderMenu();
+  renderChips("sugarChips", SUGAR, S.sugar);
+  renderChips("iceChips", ICE, S.ice);
+  syncBar();
+  applyMeta();
+  refresh();
+
+  /* ================= 連線 ================= */
+  function goOffline(){
+    S.offline = true;
+    $("dot").classList.remove("on");
+    $("liveTxt").textContent = "未連線";
+    $("nOffline").hidden = false;
+    $("bSend").textContent = "複製訂單";
+    renderList();
+  }
+
+  if (window.claude && typeof window.claude.use === "function"){
+    window.claude.use("db").then(function(db){
+      if (!db){ goOffline(); return; }
+      S.db = db; S.ready = true;
+      $("dot").classList.add("on");
+      $("liveTxt").textContent = "即時同步";
+
+      db.collection("orders").orderBy("ts","desc").limit(500).onSnapshot(function(snap){
+        S.orders = snap.docs.map(function(d){
+          var v = d.data() || {};
+          return {id:d.id, ward:v.ward||"", name:v.name||"", drink:v.drink||"",
+                  sugar:v.sugar||"", ice:v.ice||"", note:v.note||"", ts:v.ts||0, via:v.via||""};
+        });
+        refresh();
+      }, function(e){
+        $("liveTxt").textContent = "同步中斷";
+        $("dot").classList.remove("on");
+        toast(errMsg(e));
+      });
+
+      db.doc("meta/event").onSnapshot(function(d){
+        var v = d.exists ? (d.data() || {}) : {};
+        S.meta = {title: v.title || "", due: v.due || "", closed: !!v.closed};
+        applyMeta();
+      }, function(){});
+    }, goOffline);
+
+    window.claude.use("downloads").then(function(dl){
+      if (dl){ S.dl = dl; $("bCsv").hidden = false; }
+    }, function(){});
+  } else {
+    goOffline();
+  }
+})();
+</script>
