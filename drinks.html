@@ -207,6 +207,12 @@
   .setup .out[hidden]{display:none}
   .kv{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 15px;
     font-family:var(--mono);font-size:13px;line-height:1.85;overflow-x:auto;white-space:pre}
+  .kv.code{max-height:260px;overflow:auto;font-size:12px;line-height:1.7;background:var(--sunken)}
+  .setup .method{border-top:1px solid var(--line);padding-top:18px;margin-top:22px}
+  .setup .mh{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+  .setup .mh h3{font-size:17px;font-family:var(--serif);font-weight:700}
+  .setup .tagn{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--sugar);flex:none}
+  .setup .cau{color:var(--ink-3);font-size:13px}
   footer{padding:34px 0 10px;color:var(--ink-3);font-size:12.5px;line-height:1.7}
   footer .rule{height:1px;background:var(--line);margin-bottom:14px}
   footer a{color:var(--ink-3)}
@@ -324,17 +330,46 @@
   <!-- ============ 設定精靈 ============ -->
   <section class="wrap setup" id="pSetup" hidden>
     <h2>連上 Google 表單</h2>
-    <p>只有主辦人需要做這一次。做完之後，同仁開這個連結填完按送出，資料就會自動進到你的 Google 試算表，同仁彼此看不到對方點了什麼。</p>
-    <ol>
-      <li>到 <code>forms.google.com</code> 開一份新表單，關掉「收集電子郵件地址」。</li>
-      <li>建立 <b>5 個「簡答」題</b>，題目依序命名為：
-        <code>病房</code>、<code>姓名</code>、<code>飲料</code>、<code>甜度</code>、<code>冰塊</code>。
-        全部用簡答就好，<b>不用</b>把 42 個品項打進去——選項在這個網頁上。</li>
-      <li>右上角 <b>⋮</b> → <b>取得預先填入的連結</b>，在 5 個欄位依序填入
-        <code>WARD</code>、<code>NAME</code>、<code>DRINK</code>、<code>SUGAR</code>、<code>ICE</code>
-        這 5 個字，按「取得連結」再按「複製連結」。</li>
-      <li>把複製到的網址貼進下面，按「解析」。</li>
-    </ol>
+    <p>只有主辦人需要做這一次。做完之後，同仁開點單網址填完按送出，資料就會自動進到你的 Google 試算表，同仁彼此看不到對方點了什麼。</p>
+
+    <div class="method">
+      <div class="mh"><span class="tagn">方法一</span><h3>讓 Google 自己把表單建好</h3></div>
+      <p>不用自己拉表單。複製一段程式碼、按一次執行，表單和試算表都會自動生出來，大約兩分鐘。</p>
+      <ol>
+        <li>手機或電腦打開 <code>script.google.com</code>，按<b>「新增專案」</b>。</li>
+        <li>把編輯器中間原本的字<b>全部刪掉</b>，貼上下面這段程式碼。</li>
+        <li>按上方的 <b>▶ 執行</b>。第一次會要求授權：<b>審查權限</b> → 選你的 Google 帳號 →
+          看到「Google 尚未驗證這個應用程式」時，按左下角<b>「進階」</b> →
+          「<b>前往「未命名的專案」（不安全）</b>」→ <b>允許</b>。
+          <br><span class="cau">這段警告是正常的——因為這是你自己剛貼上的程式，不是別人發布的應用程式。</span></li>
+        <li>畫面下方「執行記錄」會印出一行 <code>https://docs.google.com/forms/…</code> 開頭的長網址。
+          <b>整行複製</b>，貼到本頁最下面的框，按「解析」就完成了。</li>
+      </ol>
+      <div class="kv code" id="codeBlock"></div>
+      <div class="after" style="margin-top:10px">
+        <button class="btn solid" id="bCopyGs" type="button">複製程式碼</button>
+      </div>
+    </div>
+
+    <div class="method">
+      <div class="mh"><span class="tagn">方法二</span><h3>自己手動建表單</h3></div>
+      <p>不想碰程式碼的話走這條，多幾個步驟而已。</p>
+      <ol>
+        <li>到 <code>forms.google.com</code> 開一份新表單。進「設定」關掉<b>「收集電子郵件地址」</b>；
+          如果用的是院內公務帳號，也要關掉<b>「僅限機構內使用者填寫」</b>，不然院外手機填不了。</li>
+        <li>建立 <b>5 個「簡答」題</b>，題目依序命名為：
+          <code>病房</code>、<code>姓名</code>、<code>飲料</code>、<code>甜度</code>、<code>冰塊</code>。
+          全部用簡答就好，<b>不用</b>把 42 個品項打進去——選項在這個網頁上。</li>
+        <li>右上角 <b>⋮</b> → <b>取得預先填入的連結</b>，在 5 個欄位依序填入
+          <code>WARD</code>、<code>NAME</code>、<code>DRINK</code>、<code>SUGAR</code>、<code>ICE</code>
+          這 5 個字，按「取得連結」再按「複製連結」。</li>
+      </ol>
+    </div>
+
+    <div class="method">
+      <div class="mh"><span class="tagn">最後一步</span><h3>把網址貼進來</h3></div>
+      <p>不管用哪個方法，把拿到的那一長串網址整段貼進下面，按「解析」。</p>
+    </div>
     <textarea id="iPrefill" placeholder="https://docs.google.com/forms/d/e/1FAIpQL.../viewform?usp=pp_url&amp;entry.123456=WARD&amp;entry.234567=NAME&amp;..."></textarea>
     <div class="after" style="margin-top:12px">
       <button class="btn solid" id="bParse" type="button">解析</button>
@@ -362,6 +397,60 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <iframe name="gfSink" id="gfSink" style="display:none" title="送出結果" aria-hidden="true"></iframe>
+
+<script type="text/plain" id="gsCode">/**
+ * 一般精神科 飲料點單 — 一鍵建立 Google 表單
+ * 貼到 script.google.com 的新專案，按 ▶ 執行即可。
+ */
+function setupDrinkForm() {
+  var form = FormApp.create('一般精神科 飲料點單');
+  form.setDescription('這是點單網頁的後台，請不要直接填這一份，改用點單網頁。');
+  form.setCollectEmail(false);
+  form.setAllowResponseEdits(false);
+  form.setAcceptingResponses(true);
+
+  // 公務帳號預設限制「僅限機構內使用者」，關掉才能讓所有同仁填。
+  // 個人 Gmail 沒有這個設定，會丟例外，忽略即可。
+  try { form.setRequireLogin(false); } catch (e) {}
+
+  var titles  = ['病房', '姓名', '飲料', '甜度', '冰塊'];
+  var markers = ['WARD', 'NAME', 'DRINK', 'SUGAR', 'ICE'];
+
+  var items = titles.map(function (title) {
+    return form.addTextItem().setTitle(title).setRequired(true);
+  });
+
+  // 用標記字串產生預先填入網址，網址裡就會帶著五個 entry 代號
+  var resp = form.createResponse();
+  items.forEach(function (item, i) {
+    resp = resp.withItemResponse(item.createResponse(markers[i]));
+  });
+  var prefillUrl = resp.toPrefilledUrl();
+
+  var sheetUrl = '（建立失敗，可到表單的「回覆」分頁自行建立）';
+  try {
+    var ss = SpreadsheetApp.create('飲料點單 回應');
+    form.setDestination(FormApp.DestinationType.SPREADSHEET, ss.getId());
+    sheetUrl = ss.getUrl();
+  } catch (e) {}
+
+  var out = [
+    '',
+    '===== 複製下面這一整行，貼到點單頁的「主辦人設定」=====',
+    prefillUrl,
+    '',
+    '===== 回應試算表（訂單會進到這裡）=====',
+    sheetUrl,
+    '',
+    '===== 表單本身（通常用不到）=====',
+    form.getEditUrl(),
+    ''
+  ].join('\n');
+
+  Logger.log(out);
+  return out;
+}
+</script>
 
 <script>
 (function(){
@@ -643,6 +732,18 @@
   $("bBack").addEventListener("click", function(){ view("pForm"); });
 
   /* ---------- 設定精靈 ---------- */
+  var GS_CODE = ($("gsCode") ? $("gsCode").textContent : "").replace(/^\n+/, "");
+  $("codeBlock").textContent = GS_CODE;
+  $("bCopyGs").addEventListener("click", function(){
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(GS_CODE).then(
+        function(){ toast("程式碼已複製，貼到 script.google.com"); },
+        function(){ toast("無法自動複製，請長按選取上方程式碼"); });
+    } else {
+      toast("請長按選取上方程式碼複製");
+    }
+  });
+
   $("bParse").addEventListener("click", function(){
     var raw = $("iPrefill").value.trim();
     var out = $("setupOut");
