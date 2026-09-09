@@ -158,6 +158,7 @@
   .notice{border-radius:10px;padding:12px 15px;font-size:14px;line-height:1.6;margin-bottom:20px}
   .notice.warn{background:var(--sugar-soft);border:1px solid var(--sugar)}
   .notice.bad{background:var(--danger-soft);border:1px solid var(--danger)}
+  .notice.good{background:var(--tea-soft);border:1px solid var(--tea)}
   .notice b{font-weight:700}
   .notice[hidden]{display:none}
   .notice a{color:var(--tea-ink);font-weight:700}
@@ -334,7 +335,7 @@
   <!-- ============ 送出失敗 ============ -->
   <section class="wrap done" id="pFail" hidden>
     <h2>送出沒有成功</h2>
-    <p class="lede">可能是網路不穩。你選的內容都還在——按下面的按鈕會帶著它跳到 Google 表單，再按一次「提交」就完成；或按「回上一步」稍後重送。</p>
+    <p class="lede">收單程式沒有回應。你選的內容都還在——按下面的按鈕會帶著它跳到 Google 表單，再按一次「提交」就完成，一樣算數。</p>
     <div class="receipt">
       <div class="hd">你選的</div>
       <dl>
@@ -349,6 +350,17 @@
       <a class="btn solid" id="bOpenForm" href="#" target="_blank" rel="noopener">前往 Google 表單送出</a>
       <button class="btn" id="bBack" type="button">回上一步</button>
     </div>
+  </section>
+
+  <!-- ============ 連線診斷 ============ -->
+  <section class="wrap setup" id="pTest" hidden>
+    <h2>連線診斷</h2>
+    <p>檢查點單頁能不能跟後端說上話。這個測試<b>不會寫入任何資料</b>。</p>
+    <div class="after" style="margin-top:4px">
+      <button class="btn solid" id="bPing" type="button">開始測試</button>
+      <a class="btn" href="#" id="bTestBack">回點單頁</a>
+    </div>
+    <div id="testOut"></div>
   </section>
 
   <!-- ============ 設定精靈 ============ -->
@@ -719,7 +731,7 @@ function trim(s) {
 
   /* ---------- 畫面切換 ---------- */
   function view(which){
-    ["pForm","pDone","pFail","pSetup","pAlready"].forEach(function(id){ $(id).hidden = (id !== which); });
+    ["pForm","pDone","pFail","pSetup","pAlready","pTest"].forEach(function(id){ $(id).hidden = (id !== which); });
     $("bar").style.display = (which === "pForm") ? "" : "none";
     document.body.classList.toggle("no-bar", which !== "pForm");
     window.scrollTo(0, 0);
@@ -741,6 +753,7 @@ function trim(s) {
 
   function route(){
     if (location.hash.indexOf("setup") >= 0){ view("pSetup"); return; }
+    if (location.hash.indexOf("test") >= 0){ view("pTest"); return; }
     if (MY){ showAlready(MY); return; }
     view("pForm");
   }
@@ -990,6 +1003,32 @@ function trim(s) {
     $("iName").focus();
   });
   $("bBack").addEventListener("click", function(){ view("pForm"); });
+
+  /* ---------- 連線診斷 ---------- */
+  $("bPing").addEventListener("click", function(){
+    var out = $("testOut");
+    if (!APP){
+      out.innerHTML = '<div class="notice bad" style="margin-top:14px">還沒有設定收單程式的網址。</div>';
+      return;
+    }
+    out.innerHTML = '<div class="notice warn" style="margin-top:14px">測試中，最多等 15 秒…</div>';
+    var t0 = Date.now();
+    jsonp(APP + "?action=ping&_=" + Date.now(), function(r){
+      out.innerHTML = '<div class="notice good" style="margin-top:14px"><b>後端有回應。</b>'
+        + '耗時 ' + (Date.now() - t0) + ' ms，回傳 <code>' + esc(JSON.stringify(r)) + '</code>。'
+        + '（回 bad_action 是正常的，代表它收到了請求。）部署設定正確，點單可以正常送出。</div>';
+    }, function(err){
+      out.innerHTML = '<div class="notice bad" style="margin-top:14px">'
+        + '<b>後端沒有回應（' + esc(err) + '）。</b>幾乎都是部署設定的問題：<br><br>'
+        + '① <b>誰可以存取</b>要選「<b>任何人</b>」，不能是「只有我自己」<br>'
+        + '② <b>執行身分</b>要選「<b>我</b>」<br>'
+        + '③ 程式碼改過的話要重新部署，版本要選「<b>新版本</b>」<br><br>'
+        + '也可以用瀏覽器直接打開這條網址確認：<br>'
+        + '<span class="mono" style="word-break:break-all;font-size:12px">' + esc(APP) + '</span><br><br>'
+        + '看到 <code>{"ok":false,"reason":"bad_action"}</code> 就是後端正常；'
+        + '看到登入畫面或錯誤頁，就是上面那三項要改。</div>';
+    });
+  });
 
   /* ---------- 設定精靈 ---------- */
   var GS_CODE = ($("gsCode") ? $("gsCode").textContent : "").replace(/^\n+/, "");
