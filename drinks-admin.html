@@ -127,6 +127,7 @@
   .tag{font-size:11.5px;font-family:var(--mono);letter-spacing:.04em;padding:1.5px 8px;
     border-radius:999px;background:var(--sunken);color:var(--ink-2)}
   .tag.s{background:var(--sugar-soft);color:var(--sugar)}
+  .tag.dup{background:var(--danger-soft);color:var(--danger);font-weight:500}
 
   .autobar{display:flex;align-items:center;gap:9px;background:var(--sunken);border:1px solid var(--line);
     border-radius:999px;padding:7px 15px;margin-bottom:12px;font-size:13.5px;color:var(--ink-2);
@@ -467,12 +468,22 @@
       return groups[b].length - groups[a].length || a.localeCompare(b, "zh-Hant");
     });
     $("listCount").textContent = order.length + " 個病房";
+    // 同一個「病房／姓名」出現不只一次 → 標記重複，方便主辦人處理
+    var seen = {};
+    ORDERS.forEach(function(o){
+      var k = (o.ward || "") + "/" + (o.name || "");
+      seen[k] = (seen[k] || 0) + 1;
+    });
+
     $("listBody").innerHTML = order.map(function(w){
       var rows = groups[w].map(function(o){
+        var dup = seen[(o.ward || "") + "/" + (o.name || "")] > 1;
         return '<div class="row"><div class="who">' + esc(o.name || "—") + '</div>'
           + '<div class="what"><div class="d">' + esc(o.drink || "（未填品名）") + '</div>'
           + '<div class="tags"><span class="tag s">' + esc(o.sugar || "未填甜度") + '</span>'
-          + '<span class="tag">' + esc(o.ice || "未填冰塊") + '</span></div></div></div>';
+          + '<span class="tag">' + esc(o.ice || "未填冰塊") + '</span>'
+          + (dup ? '<span class="tag dup">重複</span>' : '')
+          + '</div></div></div>';
       }).join("");
       return '<div class="ward-group"><div class="ward-head"><h3>' + esc(w) + '</h3>'
         + '<span class="c mono">' + groups[w].length + ' 杯</span></div>' + rows + '</div>';
