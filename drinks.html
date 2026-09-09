@@ -1,4 +1,7 @@
 <title>嘉南一般精神科飲料點單</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
@@ -384,7 +387,9 @@
   <footer class="wrap">
     <div class="rule"></div>
     <div>訂單只會送到主辦人的表單，同仁彼此看不到對方點了什麼。</div>
-    <div style="margin-top:6px"><a href="#setup" id="footSetup">主辦人設定</a></div>
+    <div style="margin-top:6px">
+      <span class="mono" id="verStamp">v3</span> · <a href="#setup" id="footSetup">主辦人設定</a>
+    </div>
   </footer>
 </main>
 
@@ -825,6 +830,8 @@ function setupDrinkForm() {
   syncBar();
   if (CFG && CFG.due){ $("dueTxt").hidden = false; $("dueTxt").textContent = CFG.due; }
   $("nSetup").hidden = configured();
+  // 版本標記：一眼看出載入的是哪一版、表單接上了沒（用來辨識瀏覽器快取的舊版）
+  $("verStamp").textContent = "v3 · " + (configured() ? "表單已接上" : "表單未接上");
   route();
 })();
 </script>
