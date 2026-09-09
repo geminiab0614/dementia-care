@@ -89,7 +89,8 @@
 
   .actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
   .btn{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:10px 19px;
-    font-size:14.5px;font-weight:500;cursor:pointer;color:var(--ink)}
+    font-size:14.5px;font-weight:500;cursor:pointer;color:var(--ink);text-decoration:none;
+    display:inline-flex;align-items:center}
   .btn:hover{border-color:var(--ink-3)}
   .btn.solid{background:var(--accent-btn);border-color:var(--accent-btn);color:var(--on-accent);font-weight:700}
   .btn.solid:hover{filter:brightness(1.1)}
@@ -178,10 +179,16 @@
   <section class="wrap sec">
     <div class="sec-h"><span class="k">STEP 1</span><h2>貼上表單回應</h2></div>
     <ol class="how">
-      <li>打開 Google 表單的<b>回覆</b>分頁，按綠色試算表圖示開啟試算表。</li>
-      <li>在試算表按 <code>Ctrl</code>+<code>A</code> 全選、<code>Ctrl</code>+<code>C</code> 複製（Mac 用 <code>⌘</code>）。</li>
-      <li>貼進下面的框，按「整理」。</li>
+      <li>按下面的按鈕開啟你的回應試算表（訂單都在裡面）。</li>
+      <li>在試算表按 <code>Ctrl</code>+<code>A</code> 全選、<code>Ctrl</code>+<code>C</code> 複製（Mac 用 <code>⌘</code>；
+        手機上長按任一格 →「全選」→「複製」）。</li>
+      <li>回到這一頁貼進下面的框，按「整理」。</li>
     </ol>
+    <div class="actions" style="margin:0 0 12px">
+      <a class="btn solid" id="bSheet"
+         href="https://docs.google.com/spreadsheets/d/1BvvEFIwf1mRgEShsqGzXJQE6wSOs05fdy2l7PPPZgT8/edit"
+         target="_blank" rel="noopener">開啟回應試算表</a>
+    </div>
     <textarea class="paste" id="iPaste" placeholder="時間戳記	病房	姓名	飲料	甜度	冰塊&#10;2026/9/8 上午10:12:03	康寧一	王小美	黑糖珍珠鮮奶	半糖	少冰"></textarea>
     <div class="actions">
       <button class="btn solid" id="bRun" type="button">整理</button>
@@ -226,6 +233,7 @@
   <footer class="wrap">
     <div class="rule"></div>
     <div>這頁只在你的瀏覽器裡運算，貼上的內容不會傳到任何地方。同仁看不到這一頁。</div>
+    <div class="mono" style="margin-top:6px">v3</div>
   </footer>
 </main>
 
