@@ -190,6 +190,8 @@
   .btn:hover{border-color:var(--ink-3)}
   .btn.solid{background:var(--accent-btn);border-color:var(--accent-btn);color:var(--on-accent);font-weight:700}
   .btn.solid:hover{filter:brightness(1.1)}
+  .btn.quiet{background:transparent;border-color:transparent;color:var(--ink-3);font-size:13.5px}
+  .btn.quiet:hover{background:var(--sunken);border-color:transparent;color:var(--ink-2)}
 
   /* ---------- 設定精靈 ---------- */
   .setup{padding-top:8px}
@@ -304,6 +306,7 @@
     </div>
     <div class="after">
       <button class="btn solid" id="bAgain" type="button">再幫同事點一杯</button>
+      <a class="btn quiet" id="bDoneForm" href="#" target="_blank" rel="noopener">沒送成功？改用表單再送一次</a>
     </div>
   </section>
 
@@ -460,8 +463,14 @@ function setupDrinkForm() {
      Google 表單設定。主辦人用設定精靈解析出來後，把下面兩行換掉即可永久生效；
      在換掉之前，設定精靈會把結果存在瀏覽器裡，並產生可分享的網址。
      ======================================================================= */
-  var FORM_ID = "";                      // 例：1FAIpQLSc................
-  var ENTRY   = {ward:"", name:"", drink:"", sugar:"", ice:""};  // 例：{ward:"entry.123456", ...}
+  var FORM_ID = "1FAIpQLSdW-wjdtns30kD_pgYOcBwWIxhIWOno3tLpjwSpg6x9IPSSrg";
+  var ENTRY   = {
+    ward:  "entry.2105870755",
+    name:  "entry.813722571",
+    drink: "entry.621752535",
+    sugar: "entry.1945776894",
+    ice:   "entry.1489153690"
+  };
   var DUE     = "";                      // 例："今天 15:00 截止"，留空不顯示
 
   var MENU = [
@@ -711,6 +720,7 @@ function setupDrinkForm() {
       lsSet("ncd.wards", JSON.stringify(recentWards));
       renderWardChips();
       fillReceipt("r", p);
+      $("bDoneForm").href = prefillUrl(p);
       view("pDone");
     }, function(){
       S.sending = false; $("bSend").textContent = "送出"; syncBar();
