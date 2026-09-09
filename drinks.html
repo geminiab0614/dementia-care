@@ -315,8 +315,8 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.6l5.2 5.2L20 7"/></svg>
     </div>
     <h2>你已經點過了</h2>
-    <p class="lede">一人一杯，你的訂單已經在名單上。要改內容或取消，跟主辦人說一聲就好。</p>
-    <div class="receipt">
+    <p class="lede" id="aLede">一人一杯，你的訂單已經在名單上。要改內容或取消，跟主辦人說一聲就好。</p>
+    <div class="receipt" id="aReceipt">
       <div class="hd">你的訂單</div>
       <dl>
         <div class="r"><dt>病房</dt><dd id="aWard"></dd></div>
@@ -393,6 +393,35 @@
     <div class="method">
       <div class="mh"><span class="tagn">最後一步</span><h3>把網址貼進來</h3></div>
       <p>不管用哪個方法，把拿到的那一長串網址整段貼進下面，按「解析」。</p>
+    </div>
+
+    <div class="method">
+      <div class="mh"><span class="tagn">一人一杯</span><h3>擋掉重複的姓名</h3></div>
+      <p>直接送 Google 表單沒辦法擋重複——表單不會查、網頁也不能去讀名單
+        （讀得到就等於同仁互相看得到訂單）。要做到<b>同名只能點一次</b>，
+        得多部署一支小程式，由它在寫入前先查姓名，重複就擋下不儲存。
+        設定好之後，送出成功與否也會有真實回應，不會再有「顯示成功但其實沒進去」的狀況。</p>
+      <ol>
+        <li><code>script.google.com</code> →「新增專案」，原本的內容刪掉，貼上下面這段。</li>
+        <li>右上角 <b>部署</b> →「<b>新增部署作業</b>」→ 齒輪圖示選「<b>網頁應用程式</b>」。</li>
+        <li>執行身分選 <b>「我」</b>，誰可以存取選 <b>「任何人」</b>
+          <br><span class="cau">這兩個一定要設對，不然同仁送不進來。</span></li>
+        <li>按<b>部署</b>，照上次那樣授權（進階 → 前往…（不安全）→ 允許）。</li>
+        <li>複製「網頁應用程式」那條 <code>.../exec</code> 結尾的網址，貼到最下面按「儲存」。</li>
+      </ol>
+      <div class="kv code" id="waBlock"></div>
+      <div class="after" style="margin-top:10px">
+        <button class="btn solid" id="bCopyWa" type="button">複製程式碼</button>
+      </div>
+      <label for="iAppUrl" style="display:block;font-size:12.5px;font-weight:700;color:var(--ink-2);
+        letter-spacing:.06em;margin:18px 0 6px">網頁應用程式網址</label>
+      <textarea id="iAppUrl" style="min-height:64px"
+        placeholder="https://script.google.com/macros/s/AKfycb...../exec"></textarea>
+      <div class="after" style="margin-top:10px">
+        <button class="btn solid" id="bSaveApp" type="button">儲存</button>
+        <button class="btn" id="bClearApp" type="button">停用（改回直接送表單）</button>
+      </div>
+      <div id="appOut"></div>
     </div>
     <textarea id="iPrefill" placeholder="https://docs.google.com/forms/d/e/1FAIpQL.../viewform?usp=pp_url&amp;entry.123456=WARD&amp;entry.234567=NAME&amp;..."></textarea>
     <div class="after" style="margin-top:12px">
@@ -471,6 +500,112 @@ function setupDrinkForm() {
 }
 </script>
 
+<script type="text/plain" id="gsWebapp">/**
+ * 一般精神科 飲料點單 — 收單後端（Apps Script 網頁應用程式）
+ *
+ * 為什麼要這一支：
+ *   Google 表單本身不會擋重複，純前端也查不到別人填過什麼（查得到就等於同仁
+ *   互相看得到訂單）。這支程式跑在你的帳號下，收到訂單時先查姓名，
+ *   重複就直接回「已經點過了」而不寫入，同仁那邊看不到任何別人的資料。
+ *
+ * 部署步驟：
+ *   1. script.google.com →「新增專案」，把原本的內容刪掉，貼上這整段
+ *   2. 右上角「部署」→「新增部署作業」
+ *   3. 齒輪圖示 → 選「網頁應用程式」
+ *   4. 執行身分：「我」　　誰可以存取：「任何人」　←── 這兩個要設對
+ *   5. 按「部署」，照指示授權（跟上次一樣，進階 → 前往…（不安全）→ 允許）
+ *   6. 複製「網頁應用程式」的網址（.../exec 結尾），貼到點單頁的主辦人設定
+ *
+ * 改動之後要重新部署才會生效：部署 →「管理部署作業」→ 鉛筆 → 版本選「新版本」→ 部署
+ */
+
+/** 訂單要寫進哪一份試算表（表單的回應試算表） */
+var SHEET_ID = '1BvvEFIwf1mRgEShsqGzXJQE6wSOs05fdy2l7PPPZgT8';
+
+/**
+ * 比對方式。
+ *   false = 只看姓名：全院同名的人只能有一個點成功
+ *   true  = 看病房＋姓名：不同病房的同名同仁可以各點一杯
+ * 兩個病房剛好有同名同仁時，false 會誤擋後面那位，改成 true 即可。
+ */
+var MATCH_WARD_TOO = false;
+
+/** 欄位在試算表的位置（表單建立的預設順序：時間戳記, 病房, 姓名, 飲料, 甜度, 冰塊） */
+var COL_WARD = 2;
+var COL_NAME = 3;
+
+function doGet(e) {
+  var p = (e && e.parameter) || {};
+  var result;
+  try {
+    result = (p.action === 'submit') ? submitOrder(p) : {ok: false, reason: 'bad_action'};
+  } catch (err) {
+    result = {ok: false, reason: 'error', detail: String(err)};
+  }
+  var json = JSON.stringify(result);
+
+  // 靜態網頁沒辦法直接讀跨網域的回應，用 JSONP 把結果包成一段可執行的 JS 送回去
+  if (p.callback) {
+    return ContentService
+      .createTextOutput(p.callback + '(' + json + ');')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON);
+}
+
+function submitOrder(p) {
+  var ward  = trim(p.ward);
+  var name  = trim(p.name);
+  var drink = trim(p.drink);
+  var sugar = trim(p.sugar);
+  var ice   = trim(p.ice);
+
+  if (!ward || !name || !drink || !sugar || !ice) return {ok: false, reason: 'incomplete'};
+
+  // 同時有兩個人在送出時，鎖住避免兩筆同名同時通過檢查
+  var lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(20000);
+  } catch (err) {
+    return {ok: false, reason: 'busy'};
+  }
+
+  try {
+    var sheet = SpreadsheetApp.openById(SHEET_ID).getSheets()[0];
+    var last = sheet.getLastRow();
+
+    if (last >= 2) {
+      var rows = sheet.getRange(2, 1, last - 1, Math.max(COL_WARD, COL_NAME)).getValues();
+      var key = personKey(ward, name);
+      for (var i = 0; i < rows.length; i++) {
+        var existing = personKey(rows[i][COL_WARD - 1], rows[i][COL_NAME - 1]);
+        if (existing && existing === key) return {ok: false, reason: 'duplicate'};
+      }
+    }
+
+    sheet.appendRow([new Date(), ward, name, drink, sugar, ice]);
+    return {ok: true};
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** 產生比對用的鍵值：去掉所有空白、統一大小寫，避免「王小美」和「王 小美」被當成兩個人 */
+function personKey(ward, name) {
+  var n = norm(name);
+  if (!n) return '';
+  return MATCH_WARD_TOO ? (norm(ward) + '|' + n) : n;
+}
+
+function norm(s) {
+  return String(s == null ? '' : s).replace(/\s+/g, '').toLowerCase();
+}
+
+function trim(s) {
+  return String(s == null ? '' : s).trim();
+}
+</script>
+
 <script>
 (function(){
   "use strict";
@@ -488,6 +623,11 @@ function setupDrinkForm() {
     ice:   "entry.1489153690"
   };
   var DUE     = "";                      // 例："今天 15:00 截止"，留空不顯示
+
+  /* Apps Script 網頁應用程式網址（.../exec）。
+     設定後改由它收單：寫入前先比對姓名，重複就擋下不儲存，並回傳真實結果。
+     留空則沿用直接送 Google 表單的舊方式（不會擋重複）。 */
+  var APP_URL = "";
 
   var MENU = [
     {cat:"黑糖鮮奶", items:["黑糖珍珠鮮奶","黑糖珍珠厚鮮奶","黑糖布蕾珍珠鮮奶","黑糖粉粿鮮奶","黑糖綿芋鮮奶","黑糖仙草鮮奶","黑糖鮮奶"]},
@@ -524,6 +664,15 @@ function setupDrinkForm() {
   }
   function packCfg(cfg){ return btoa(encodeURIComponent(JSON.stringify(cfg))); }
 
+  function loadApp(){
+    if (APP_URL) return APP_URL;
+    var m = (location.hash + "&" + location.search).match(/[#&?]app=([^&]+)/);
+    if (m){
+      try { var u = decodeURIComponent(m[1]); lsSet("ncd.appurl", u); return u; } catch(e){}
+    }
+    return lsGet("ncd.appurl") || "";
+  }
+
   function loadCfg(){
     if (FORM_ID && ENTRY.ward) return {id:FORM_ID, e:ENTRY, due:DUE};
     var fromUrl = readCfgFromUrl();
@@ -535,7 +684,8 @@ function setupDrinkForm() {
     return null;
   }
   var CFG = loadCfg();
-  function configured(){ return !!(CFG && CFG.id && CFG.e && CFG.e.ward); }
+  var APP = loadApp();
+  function configured(){ return !!(APP || (CFG && CFG.id && CFG.e && CFG.e.ward)); }
 
   /* ---------- 一人一杯 ----------
      送出後把訂單記在這台裝置上，再開就顯示「已經點過了」。
@@ -574,9 +724,24 @@ function setupDrinkForm() {
     document.body.classList.toggle("no-bar", which !== "pForm");
     window.scrollTo(0, 0);
   }
+  /* 已經點過的畫面。有本機紀錄就連訂單一起顯示；
+     若是後端查到同名擋下的，只說這個名字已在名單上，不透露對方點了什麼。 */
+  function showAlready(order, name){
+    if (order){
+      fillReceipt("a", order);
+      $("aReceipt").hidden = false;
+      $("aLede").textContent = "一人一杯，你的訂單已經在名單上。要改內容或取消，跟主辦人說一聲就好。";
+    } else {
+      $("aReceipt").hidden = true;
+      $("aLede").textContent = "「" + (name || "這個名字") +
+        "」已經在名單上了。一人一杯，要改內容或取消，跟主辦人說一聲就好。";
+    }
+    view("pAlready");
+  }
+
   function route(){
     if (location.hash.indexOf("setup") >= 0){ view("pSetup"); return; }
-    if (MY){ fillReceipt("a", MY); view("pAlready"); return; }
+    if (MY){ showAlready(MY); return; }
     view("pForm");
   }
   window.addEventListener("hashchange", route);
@@ -691,6 +856,42 @@ function setupDrinkForm() {
     return u;
   }
 
+  /* 靜態網頁讀不到跨網域的回應，改用 JSONP：動態插入一個 script 標籤，
+     讓後端把結果包成 callback(...) 送回來，就能真的知道成功還是重複。 */
+  function jsonp(url, done, fail){
+    var cb = "__ncd" + Date.now() + Math.floor(Math.random() * 1e6);
+    var s = document.createElement("script");
+    var settled = false;
+    function finish(data, err){
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      try { delete window[cb]; } catch(e){ window[cb] = undefined; }
+      if (s.parentNode) s.parentNode.removeChild(s);
+      if (err) fail(err); else done(data);
+    }
+    var timer = setTimeout(function(){ finish(null, "timeout"); }, 15000);
+    window[cb] = function(data){ finish(data); };
+    s.onerror = function(){ finish(null, "network"); };
+    s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + cb;
+    document.body.appendChild(s);
+  }
+
+  function submitViaApp(p, ok, dup, fail){
+    var q = "?action=submit"
+      + "&ward="  + encodeURIComponent(p.ward)
+      + "&name="  + encodeURIComponent(p.name)
+      + "&drink=" + encodeURIComponent(p.drink)
+      + "&sugar=" + encodeURIComponent(p.sugar)
+      + "&ice="   + encodeURIComponent(p.ice)
+      + "&_="     + Date.now();
+    jsonp(APP + q, function(r){
+      if (r && r.ok) ok();
+      else if (r && r.reason === "duplicate") dup();
+      else fail();
+    }, fail);
+  }
+
   function postToForm(p, ok, fail){
     var sink = $("gfSink"), settled = false;
     function finish(good){
@@ -728,7 +929,7 @@ function setupDrinkForm() {
   }
 
   $("bSend").addEventListener("click", function(){
-    if (MY){ fillReceipt("a", MY); view("pAlready"); return; }
+    if (MY){ showAlready(MY); return; }
     if (!validate()) return;
     if (!configured()){
       toast("尚未接上 Google 表單，請先完成設定");
@@ -744,25 +945,39 @@ function setupDrinkForm() {
     $("bSend").disabled = true;
     $("bSend").textContent = "送出中";
 
-    postToForm(p, function(){
-      S.sending = false; $("bSend").textContent = "送出"; syncBar();
+    function reset(){ S.sending = false; $("bSend").textContent = "送出"; syncBar(); }
+
+    function onOk(){
+      reset();
       lsSet("ncd.ward", p.ward);
       lsSet("ncd.name", p.name);
       if (recentWards.indexOf(p.ward) < 0) recentWards.unshift(p.ward);
       recentWards = recentWards.slice(0, 6);
       lsSet("ncd.wards", JSON.stringify(recentWards));
       renderWardChips();
-      MY = {form: CFG.id, ward:p.ward, name:p.name, drink:p.drink,
+      MY = {form: (CFG ? CFG.id : APP), ward:p.ward, name:p.name, drink:p.drink,
             sugar:p.sugar, ice:p.ice, ts:Date.now()};
       lsSet(MYKEY, JSON.stringify(MY));
       fillReceipt("r", p);
       view("pDone");
-    }, function(){
-      S.sending = false; $("bSend").textContent = "送出"; syncBar();
+    }
+
+    // 後端查到同名 → 不儲存，直接告知
+    function onDup(){
+      reset();
+      showAlready(null, p.name);
+    }
+
+    function onFail(){
+      reset();
       fillReceipt("fb", p);
-      $("bOpenForm").href = prefillUrl(p);
+      $("bOpenForm").href = CFG ? prefillUrl(p) : "#";
+      $("bOpenForm").hidden = !CFG;
       view("pFail");
-    });
+    }
+
+    if (APP) submitViaApp(p, onOk, onDup, onFail);
+    else postToForm(p, onOk, onFail);
   });
 
   $("bNotMe").addEventListener("click", function(){
@@ -787,6 +1002,43 @@ function setupDrinkForm() {
     } else {
       toast("請長按選取上方程式碼複製");
     }
+  });
+
+  var WA_CODE = ($("gsWebapp") ? $("gsWebapp").textContent : "").replace(/^\n+/, "");
+  $("waBlock").textContent = WA_CODE;
+  function copyStr(str, okMsg){
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(str).then(
+        function(){ toast(okMsg); },
+        function(){ toast("無法自動複製，請長按選取"); });
+    } else { toast("請長按選取複製"); }
+  }
+  $("bCopyWa").addEventListener("click", function(){ copyStr(WA_CODE, "程式碼已複製"); });
+
+  $("iAppUrl").value = APP;
+  $("bSaveApp").addEventListener("click", function(){
+    var u = $("iAppUrl").value.trim();
+    if (!u){ toast("請先貼上網址"); return; }
+    if (u.indexOf("script.google.com") < 0 || u.slice(-5) !== "/exec"){
+      $("appOut").innerHTML = '<div class="notice bad" style="margin-top:12px">'
+        + '這不像網頁應用程式的網址。應該是 <code>script.google.com</code> 開頭、'
+        + '<code>/exec</code> 結尾。注意不要複製到 <code>/dev</code> 那一條。</div>';
+      return;
+    }
+    APP = u; lsSet("ncd.appurl", u);
+    $("nSetup").hidden = configured();
+    $("appOut").innerHTML = '<div class="notice warn" style="margin-top:12px">'
+      + '<b>已啟用一人一杯。</b>之後同名的同仁送出時會被擋下，不會寫進試算表。'
+      + '請自己先試送一筆確認，再送第二筆同名的看看有沒有被擋。</div>';
+    toast("已儲存");
+  });
+  $("bClearApp").addEventListener("click", function(){
+    APP = ""; try { localStorage.removeItem("ncd.appurl"); } catch(e){}
+    $("iAppUrl").value = "";
+    $("nSetup").hidden = configured();
+    $("appOut").innerHTML = '<div class="notice warn" style="margin-top:12px">'
+      + '已停用，改回直接送 Google 表單（不會擋重複）。</div>';
+    toast("已停用");
   });
 
   $("bParse").addEventListener("click", function(){
